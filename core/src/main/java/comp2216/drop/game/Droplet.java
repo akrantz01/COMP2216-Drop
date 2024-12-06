@@ -20,8 +20,9 @@ public class Droplet implements Collidable {
         return this.sprite.getBoundingRectangle();
     }
 
-    public void move(float delta) {
+    public boolean move(float delta) {
         this.sprite.translateY(-2f * delta);
+        return this.sprite.getY() < -1;
     }
 
     public void draw(SpriteBatch batch) {

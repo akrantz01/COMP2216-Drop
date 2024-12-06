@@ -46,9 +46,8 @@ public class Game extends ScreenAdapter {
         for (int i = this.droplets.size - 1; i >= 0; i--) {
             Droplet droplet = this.droplets.get(i);
 
-            droplet.move(delta);
-
-            if (this.player.collidesWith(droplet)) this.droplets.removeIndex(i);
+            if (droplet.move(delta)) this.droplets.removeIndex(i);
+            else if (this.player.collidesWith(droplet)) this.droplets.removeIndex(i);
         }
         this.spawnDroplet(delta);
 
