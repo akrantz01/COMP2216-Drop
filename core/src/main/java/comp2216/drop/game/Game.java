@@ -2,6 +2,8 @@ package comp2216.drop.game;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -20,9 +22,12 @@ public class Game extends ScreenAdapter {
     private final Texture dropletTexture;
     private final Array<Droplet> droplets;
     private float dropTimer;
+    private final Sound dropSound;
 
     private int score;
     private int health;
+
+    private final Music music;
 
     private final Consumer<Integer> onGameOver;
     private final GameProcessor inputProcessor;
@@ -37,6 +42,11 @@ public class Game extends ScreenAdapter {
         this.dropletTexture = new Texture("drop.png");
         this.droplets = new Array<>();
         this.dropTimer = 0;
+        this.dropSound = Gdx.audio.newSound(Gdx.files.internal("drop.mp3"));
+
+        this.music = Gdx.audio.newMusic(Gdx.files.internal("music.mp3"));
+        this.music.setLooping(true);
+        this.music.setVolume(0.5f);
 
         this.onGameOver = onGameOver;
         this.inputProcessor = new GameProcessor(this.viewport, this.player);
@@ -49,6 +59,12 @@ public class Game extends ScreenAdapter {
         this.dropTimer = 0;
         this.score = 0;
         this.health = 3;
+        this.music.play();
+    }
+
+    @Override
+    public void hide() {
+        this.music.pause();
     }
 
     @Override
@@ -66,6 +82,7 @@ public class Game extends ScreenAdapter {
             else if (this.player.collidesWith(droplet)) {
                 this.droplets.removeIndex(i);
                 this.score++;
+                this.dropSound.play();
             }
         }
         this.spawnDroplet(delta);
@@ -89,6 +106,8 @@ public class Game extends ScreenAdapter {
 
     @Override
     public void dispose() {
+        this.music.dispose();
+        this.dropSound.dispose();
         this.dropletTexture.dispose();
         this.player.dispose();
     }
