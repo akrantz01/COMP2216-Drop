@@ -8,6 +8,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
+import java.util.function.Consumer;
+
 public class Game extends ScreenAdapter {
     private final SpriteBatch batch;
     private final Viewport viewport;
@@ -22,9 +24,10 @@ public class Game extends ScreenAdapter {
     private int score;
     private int health;
 
+    private final Consumer<Integer> onGameOver;
     private final GameProcessor inputProcessor;
 
-    public Game(SpriteBatch batch, Viewport viewport, BitmapFont font) {
+    public Game(SpriteBatch batch, Viewport viewport, BitmapFont font, Consumer<Integer> onGameOver) {
         this.batch = batch;
         this.viewport = viewport;
         this.font = font;
@@ -35,6 +38,7 @@ public class Game extends ScreenAdapter {
         this.droplets = new Array<>();
         this.dropTimer = 0;
 
+        this.onGameOver = onGameOver;
         this.inputProcessor = new GameProcessor(this.viewport, this.player);
     }
 
@@ -57,6 +61,7 @@ public class Game extends ScreenAdapter {
             if (droplet.move(delta)) {
                 this.droplets.removeIndex(i);
                 this.health--;
+                if (this.health == 0) this.onGameOver.accept(this.score);
             }
             else if (this.player.collidesWith(droplet)) {
                 this.droplets.removeIndex(i);

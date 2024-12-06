@@ -22,6 +22,7 @@ public class Drop extends ApplicationAdapter {
 
     private MainMenu mainMenu;
     private Game game;
+    private GameOver gameOver;
     private Screen currentScreen;
 
     public Drop() {
@@ -39,7 +40,8 @@ public class Drop extends ApplicationAdapter {
         this.font.getData().setScale(this.viewport.getWorldHeight() / Gdx.graphics.getHeight());
 
         this.mainMenu = new MainMenu(this.batch, this.font, this::onStart);
-        this.game = new Game(this.batch, this.viewport, this.font);
+        this.game = new Game(this.batch, this.viewport, this.font, this::onGameOver);
+        this.gameOver = new GameOver(this.batch, this.font, this::onMainMenu);
         this.setCurrentScreen(this.mainMenu);
     }
 
@@ -62,6 +64,15 @@ public class Drop extends ApplicationAdapter {
 
     public void onStart() {
         this.setCurrentScreen(this.game);
+    }
+
+    public void onGameOver(int score) {
+        this.gameOver.setScore(score);
+        this.setCurrentScreen(this.gameOver);
+    }
+
+    public void onMainMenu() {
+        this.setCurrentScreen(this.mainMenu);
     }
 
     private void setCurrentScreen(Screen screen) {
