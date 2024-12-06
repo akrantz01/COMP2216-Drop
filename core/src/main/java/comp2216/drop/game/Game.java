@@ -20,6 +20,7 @@ public class Game extends ScreenAdapter {
     private float dropTimer;
 
     private int score;
+    private int health;
 
     private final GameProcessor inputProcessor;
 
@@ -43,6 +44,7 @@ public class Game extends ScreenAdapter {
         this.droplets.clear();
         this.dropTimer = 0;
         this.score = 0;
+        this.health = 3;
     }
 
     @Override
@@ -52,7 +54,10 @@ public class Game extends ScreenAdapter {
         for (int i = this.droplets.size - 1; i >= 0; i--) {
             Droplet droplet = this.droplets.get(i);
 
-            if (droplet.move(delta)) this.droplets.removeIndex(i);
+            if (droplet.move(delta)) {
+                this.droplets.removeIndex(i);
+                this.health--;
+            }
             else if (this.player.collidesWith(droplet)) {
                 this.droplets.removeIndex(i);
                 this.score++;
@@ -63,6 +68,7 @@ public class Game extends ScreenAdapter {
         this.droplets.forEach(droplet -> droplet.draw(this.batch));
         this.player.draw(this.batch);
         this.font.draw(this.batch, "Score: " + this.score, 3.75f, 4.75f);
+        this.font.draw(this.batch, "Health: " + this.health, 3.75f, 4.5f);
     }
 
     private void spawnDroplet(float delta) {
