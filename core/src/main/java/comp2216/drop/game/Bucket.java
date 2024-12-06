@@ -3,9 +3,10 @@ package comp2216.drop.game;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Disposable;
 
-public class Bucket implements Disposable {
+public class Bucket implements Collidable, Disposable {
     private static final float SPEED = 4;
 
     private final Texture texture;
@@ -15,6 +16,11 @@ public class Bucket implements Disposable {
         this.texture = new Texture("bucket.png");
         this.sprite = new Sprite(this.texture);
         this.sprite.setSize(1, 1);
+    }
+
+    @Override
+    public Rectangle getCollisionArea() {
+        return this.sprite.getBoundingRectangle();
     }
 
     public void move(float by) {

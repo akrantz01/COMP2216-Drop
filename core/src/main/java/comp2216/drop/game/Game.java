@@ -43,7 +43,13 @@ public class Game extends ScreenAdapter {
     public void render(float delta) {
         this.inputProcessor.move(delta);
 
-        this.droplets.forEach(droplet -> droplet.move(delta));
+        for (int i = this.droplets.size - 1; i >= 0; i--) {
+            Droplet droplet = this.droplets.get(i);
+
+            droplet.move(delta);
+
+            if (this.player.collidesWith(droplet)) this.droplets.removeIndex(i);
+        }
         this.spawnDroplet(delta);
 
         this.droplets.forEach(droplet -> droplet.draw(this.batch));
