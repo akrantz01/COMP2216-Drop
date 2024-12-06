@@ -3,6 +3,7 @@ package comp2216.drop.game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.Viewport;
@@ -10,6 +11,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 public class Game extends ScreenAdapter {
     private final SpriteBatch batch;
     private final Viewport viewport;
+    private final BitmapFont font;
 
     private final Bucket player;
 
@@ -17,11 +19,14 @@ public class Game extends ScreenAdapter {
     private final Array<Droplet> droplets;
     private float dropTimer;
 
+    private int score;
+
     private final GameProcessor inputProcessor;
 
-    public Game(SpriteBatch batch, Viewport viewport) {
+    public Game(SpriteBatch batch, Viewport viewport, BitmapFont font) {
         this.batch = batch;
         this.viewport = viewport;
+        this.font = font;
 
         this.player = new Bucket();
 
@@ -37,6 +42,7 @@ public class Game extends ScreenAdapter {
         Gdx.input.setInputProcessor(this.inputProcessor);
         this.droplets.clear();
         this.dropTimer = 0;
+        this.score = 0;
     }
 
     @Override
@@ -47,12 +53,16 @@ public class Game extends ScreenAdapter {
             Droplet droplet = this.droplets.get(i);
 
             if (droplet.move(delta)) this.droplets.removeIndex(i);
-            else if (this.player.collidesWith(droplet)) this.droplets.removeIndex(i);
+            else if (this.player.collidesWith(droplet)) {
+                this.droplets.removeIndex(i);
+                this.score++;
+            }
         }
         this.spawnDroplet(delta);
 
         this.droplets.forEach(droplet -> droplet.draw(this.batch));
         this.player.draw(this.batch);
+        this.font.draw(this.batch, "Score: " + this.score, 3.75f, 4.75f);
     }
 
     private void spawnDroplet(float delta) {
