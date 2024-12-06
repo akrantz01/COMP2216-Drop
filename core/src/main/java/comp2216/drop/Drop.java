@@ -2,6 +2,7 @@ package comp2216.drop;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -21,6 +22,7 @@ public class Drop extends ApplicationAdapter {
 
     private MainMenu mainMenu;
     private Game game;
+    private Screen currentScreen;
 
     public Drop() {
         super();
@@ -38,7 +40,7 @@ public class Drop extends ApplicationAdapter {
 
         this.mainMenu = new MainMenu(this.batch, this.font, this::onStart);
         this.game = new Game(this.batch, this.viewport);
-        this.game.show();
+        this.setCurrentScreen(this.mainMenu);
     }
 
     @Override
@@ -54,12 +56,18 @@ public class Drop extends ApplicationAdapter {
 
         this.batch.begin();
         this.batch.draw(this.background, 0, 0, this.viewport.getWorldWidth(), this.viewport.getWorldHeight());
-        this.game.render(Gdx.graphics.getDeltaTime());
+        this.currentScreen.render(Gdx.graphics.getDeltaTime());
         this.batch.end();
     }
 
     public void onStart() {
-        // TODO
+        this.setCurrentScreen(this.game);
+    }
+
+    private void setCurrentScreen(Screen screen) {
+        if (this.currentScreen != null) this.currentScreen.hide();
+        this.currentScreen = screen;
+        this.currentScreen.show();
     }
 
     @Override
