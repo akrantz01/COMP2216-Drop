@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import comp2216.drop.game.Game;
 import comp2216.drop.mainmenu.MainMenu;
 
 public class Drop extends ApplicationAdapter {
@@ -19,6 +20,7 @@ public class Drop extends ApplicationAdapter {
     private BitmapFont font;
 
     private MainMenu mainMenu;
+    private Game game;
 
     public Drop() {
         super();
@@ -35,6 +37,8 @@ public class Drop extends ApplicationAdapter {
         this.font.getData().setScale(this.viewport.getWorldHeight() / Gdx.graphics.getHeight());
 
         this.mainMenu = new MainMenu(this.batch, this.font, this::onStart);
+        this.game = new Game(this.batch);
+        this.game.show();
     }
 
     @Override
@@ -50,7 +54,7 @@ public class Drop extends ApplicationAdapter {
 
         this.batch.begin();
         this.batch.draw(this.background, 0, 0, this.viewport.getWorldWidth(), this.viewport.getWorldHeight());
-        this.mainMenu.render(Gdx.graphics.getDeltaTime());
+        this.game.render(Gdx.graphics.getDeltaTime());
         this.batch.end();
     }
 
@@ -60,6 +64,7 @@ public class Drop extends ApplicationAdapter {
 
     @Override
     public void dispose() {
+        this.game.dispose();
         this.mainMenu.dispose();
 
         this.font.dispose();
