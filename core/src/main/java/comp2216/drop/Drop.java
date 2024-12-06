@@ -34,7 +34,7 @@ public class Drop extends ApplicationAdapter {
         this.font.setUseIntegerPositions(false);
         this.font.getData().setScale(this.viewport.getWorldHeight() / Gdx.graphics.getHeight());
 
-        this.mainMenu = new MainMenu(this.batch, this.font);
+        this.mainMenu = new MainMenu(this.batch, this.font, this::onStart);
     }
 
     @Override
@@ -52,6 +52,10 @@ public class Drop extends ApplicationAdapter {
         this.batch.draw(this.background, 0, 0, this.viewport.getWorldWidth(), this.viewport.getWorldHeight());
         this.mainMenu.render(Gdx.graphics.getDeltaTime());
         this.batch.end();
+    }
+
+    public void onStart() {
+        // TODO
     }
 
     @Override
