@@ -3,6 +3,7 @@ package comp2216.drop.game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.utils.viewport.Viewport;
 
 public class Game extends ScreenAdapter {
     private final SpriteBatch batch;
@@ -11,12 +12,12 @@ public class Game extends ScreenAdapter {
 
     private final GameProcessor inputProcessor;
 
-    public Game(SpriteBatch batch) {
+    public Game(SpriteBatch batch, Viewport viewport) {
         this.batch = batch;
 
         this.player = new Bucket();
 
-        this.inputProcessor = new GameProcessor(this.player);
+        this.inputProcessor = new GameProcessor(viewport, this.player);
     }
 
     @Override

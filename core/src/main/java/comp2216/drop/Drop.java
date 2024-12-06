@@ -37,7 +37,7 @@ public class Drop extends ApplicationAdapter {
         this.font.getData().setScale(this.viewport.getWorldHeight() / Gdx.graphics.getHeight());
 
         this.mainMenu = new MainMenu(this.batch, this.font, this::onStart);
-        this.game = new Game(this.batch);
+        this.game = new Game(this.batch, this.viewport);
         this.game.show();
     }
 
